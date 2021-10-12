@@ -26,21 +26,28 @@ var clients = 0;
 io.on('connection', (socket) => {
     //log user count and connection message
     clients ++;
-    console.log('a user from:' + socket.request.socket.remoteAddress +', connected at ' + socket.handshake.time);
-    console.log(`current user count: ${clients}`);
-    
-    //socket sends message
-    socket.on('chat message', (msg) => {
-      console.log('message: ' + msg);
-      //send the message to all connected sockets
-      io.emit('chat message', msg);
-    });
+    socket.broadcast.emit('chat message','a user from:' + socket.request.socket.remoteAddress +', connected at ' + socket.handshake.time);
+    socket.broadcast.emit('chat message',`current other users count: ${clients-1}`);
+    if(clients == 2){
+      socket.emit('chat message', `Welcome! There is currently ${clients-1} other user in this chat`);
+    }
+    else{
+      socket.emit('chat message', `Welcome! There are currently ${clients-1} other users in this chat`);
+    }
 
+    
     //socket disconnects
     socket.on('disconnect', () => {
-        console.log('a user from:' + socket.request.socket.remoteAddress +', disconnected at ' + socket.handshake.time);
-        clients--;
-        console.log(`current user count: ${clients}`)
+      socket.broadcast.emit('chat message','a user with an adress:' + socket.request.socket.remoteAddress +', disconnected at ' + socket.handshake.time);
+      clients--;
+      socket.broadcast.emit('chat message',`other user count in the chat: ${clients-1}`)
+    });
+    
+    
+    //listen on 'chat message'
+    socket.on('chat message', (msg) => {
+      //send the message to all connected sockets
+      io.emit('chat message', msg);
     });
 });
 

@@ -16,7 +16,7 @@ window.onload = function () {
             }
         });
 
-        //capture a chat message event to include in the page
+        //capture a chat message event from the server to include in the page
         socket.on('chat message', function(msg) {
             var item = document.createElement('li');
             item.textContent = msg;
