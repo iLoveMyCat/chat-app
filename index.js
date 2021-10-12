@@ -20,9 +20,12 @@ io.on('connection', (socket) => {
     });
 });
 
+
 io.on('connection', (socket) => {
     socket.on('chat message', (msg) => {
       console.log('message: ' + msg);
+      //send the message to all connected sockets
+      io.emit('chat message', msg);
     });
 });
 
