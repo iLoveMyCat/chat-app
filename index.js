@@ -15,8 +15,14 @@ app.get('/', (req, res) => {
 //listen on the connection event for incoming sockets and log it to the console.
 io.on('connection', (socket) => {
     console.log('a user from:' + socket.request.socket.remoteAddress +', connected at ' + socket.handshake.time);
-    console.log(socket.handshake.time);
   });
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
+    socket.on('disconnect', () => {
+        console.log('a user from:' + socket.request.socket.remoteAddress +', disconnected at ' + socket.handshake.time);
+    });
+});
 
 //server listens on port 3000
 server.listen(3000, () => {
