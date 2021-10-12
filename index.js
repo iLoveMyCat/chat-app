@@ -20,6 +20,11 @@ io.on('connection', (socket) => {
     });
 });
 
+io.on('connection', (socket) => {
+    socket.on('chat message', (msg) => {
+      console.log('message: ' + msg);
+    });
+});
 
 //server listens on port 3000
 server.listen(3000, () => {
