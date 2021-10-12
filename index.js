@@ -6,7 +6,7 @@ const server = http.createServer(app);
 
 //define home route
 app.get('/', (req, res) => {
-  res.send('<h1>Hello world</h1>');
+  res.sendFile(__dirname + '/index.html');
 });
 
 //server listens on port 3000
