@@ -4,4 +4,5 @@
  - Add “{user} is typing” functionality.
  - Show who’s online.
  - Add private messaging.
- - Share your improvements!
+ asd
+ git clone https://github.com/socketio/chat-example.git
