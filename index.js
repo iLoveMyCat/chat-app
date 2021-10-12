@@ -3,11 +3,20 @@ const express = require('express');
 const app = express();
 const http = require('http');
 const server = http.createServer(app);
+//initialize a new instance of socket.io by passing the server (the HTTP server) object. 
+const { Server } = require("socket.io");
+const io = new Server(server);
 
 //define home route
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
+
+//listen on the connection event for incoming sockets and log it to the console.
+io.on('connection', (socket) => {
+    console.log('a user from:' + socket.request.socket.remoteAddress +', connected at ' + socket.handshake.time);
+    console.log(socket.handshake.time);
+  });
 
 //server listens on port 3000
 server.listen(3000, () => {
