@@ -15,6 +15,12 @@
       #messages > li:nth-child(odd) { background: #efefef; }
     </style>
   </head>
+  <!-- load the socket.io-client, which exposes an io global (and the endpoint GET /socket.io/socket.io.js), and then connect. -->
+  <!-- to use the local version of the client-side JS file, you can find it at node_modules/socket.io/client-dist/socket.io.js. -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+  </script>
   <body>
     <ul id="messages"></ul>
     <form id="form" action="">
