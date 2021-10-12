@@ -6,3 +6,10 @@
  - Add private messaging.
  asd
  git clone https://github.com/socketio/chat-example.git
+
+
+
+
+ socket.emit(); => to this specific client
+ socket.broadcast.emit(); => all except this client
+ io.emit();  => all clients

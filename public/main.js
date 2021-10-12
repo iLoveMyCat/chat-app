@@ -19,10 +19,14 @@ window.onload = function () {
         //capture a chat message event from the server to include in the page
         socket.on('chat message', function(msg) {
             var item = document.createElement('li');
-            item.textContent = msg;
+            item.textContent = "[" + msg.time + "-"+  msg.username + "]: " + msg.text ;
             messages.appendChild(item);
-            window.scrollTo(0, document.body.scrollHeight);
+            // messages.style.background = msg.color;
+            // console.log(msg.color);
+            // window.scrollTo(0, document.body.scrollHeight);
+            window.scrollTop = document.body.scrollHeight;
         });
+        input.focus;
     }
 };    
 
