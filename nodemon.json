@@ -1,4 +1,4 @@
 {
-    "delay": 2000,
-    "ignore": ["todo.txt", "*/*.css"]
+    "delay": 2000
+    // "ignore": ["todo.txt", "*/*.css"]
 }

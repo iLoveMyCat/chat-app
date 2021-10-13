@@ -5,12 +5,11 @@ window.onload = function () {
     var form = document.getElementById('form');
     var input = document.getElementById('input');
     var messages = document.getElementById('messages');
-    console.log(form,input,messages);
+
     if(form && input){
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             if(input.value) {
-                console.log(input.value);
                 socket.emit('chat message',input.value);
                 input.value = '';
             }

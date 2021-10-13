@@ -7,7 +7,7 @@ const server = http.createServer(app);
 //set static folder
 app.use(express.static(path.join(__dirname, 'public')))
 //use port 3000 if no env.port
-const PORT = 3000 || process.env.PORT;
+const PORT = process.env.PORT || 3000;
 //initialize a new instance of socket.io by passing the server (the HTTP server) object. 
 const { Server } = require("socket.io");
 const io = new Server(server);
