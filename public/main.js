@@ -5,14 +5,14 @@ window.onload = function () {
     var form = document.getElementById('form');
     var input = document.getElementById('input');
     var messages = document.getElementById('messages');
-
-
+    console.log(form,input,messages);
     if(form && input){
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-            if (input.value) {
-            socket.emit('chat message', input.value);
-            input.value = '';
+            if(input.value) {
+                console.log(input.value);
+                socket.emit('chat message',input.value);
+                input.value = '';
             }
         });
 
@@ -20,11 +20,10 @@ window.onload = function () {
         socket.on('chat message', function(msg) {
             var item = document.createElement('li');
             item.textContent = "[" + msg.time + "-"+  msg.username + "]: " + msg.text ;
+            item.style.color = msg.color;
             messages.appendChild(item);
-            // messages.style.background = msg.color;
-            // console.log(msg.color);
-            // window.scrollTo(0, document.body.scrollHeight);
-            window.scrollTop = document.body.scrollHeight;
+            window.scrollTo(0, document.body.scrollHeight);
+            // window.scrollTop = document.body.scrollHeight;
         });
         input.focus;
     }
