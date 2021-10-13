@@ -32,7 +32,7 @@ io.on('connection', (socket) => {
     //socket disconnects
     socket.on('disconnect', () => {
       clients--;
-      socket.broadcast.emit('chat message',formatMessage(BOT_NAME,'a user disconnected, ' + `${clients-1} users left in the chat`));
+      socket.broadcast.emit('chat message',formatMessage(BOT_NAME,'a user disconnected, ' + `${clients-1} other users left in the chat`));
     });
     
     //listen on 'chat message'

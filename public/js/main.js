@@ -1,7 +1,12 @@
+//get username from URL using qs
+//location.search for the url
+const {username} = Qs.parse(location.search, { ignoreQueryPrefix: true});
+
 //  io(), with no specified URL defaultly trying to connect to the host that serves the page.
 var socket = io();
 
 window.onload = function () {
+    console.log(username);
     var form = document.getElementById('form');
     var input = document.getElementById('input');
     var messages = document.getElementById('messages');
