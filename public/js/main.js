@@ -1,15 +1,16 @@
 //get username from URL using qs
 //location.search for the url
-const {username} = Qs.parse(location.search, { ignoreQueryPrefix: true});
+const {username, color} = Qs.parse(location.search, { ignoreQueryPrefix: true});
 
 //  io(), with no specified URL defaultly trying to connect to the host that serves the page.
 var socket = io();
-
 window.onload = function () {
-    console.log(username);
+    socket.emit('join server', {username, color});
+    
     var form = document.getElementById('form');
     var input = document.getElementById('input');
     var messages = document.getElementById('messages');
+    var userList = document.getElementById('users');
 
     if(form && input){
         form.addEventListener('submit', function(e) {
@@ -26,9 +27,20 @@ window.onload = function () {
             item.textContent = "[" + msg.time + "-"+  msg.username + "]: " + msg.text ;
             item.style.color = msg.color;
             messages.appendChild(item);
-            window.scrollTo(0, document.body.scrollHeight);
-            // window.scrollTop = document.body.scrollHeight;
+            messages.scrollTo(0, document.body.scrollHeight);
+            messages.scrollTop = document.body.scrollHeight;
         });
+
+        socket.on('room users', ({users}) =>{
+            outputUsers(users);
+        });
+
+        function outputUsers(users){
+            userList.innerHTML = `
+                ${users.map(user => `<li>${user.username}</li>`).join('')}
+            `
+        }
+
         input.focus;
     }
 };    

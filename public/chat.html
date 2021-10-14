@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
+    <title>Chat Chat</title>
     <link rel="stylesheet" href="./css/chat.css">
+    <link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+		/>
   </head>
   <!-- A querystring parser to grab the username-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.10.1/qs.min.js" integrity="sha512-aTKlYRb1QfU1jlF3k+aS4AqTpnTXci4R79mkdie/bp6Xm51O5O3ESAYhvg6zoicj/PD6VYY0XrYwsWLcvGiKZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -11,9 +15,25 @@
   <script src="/socket.io/socket.io.js"></script>
   <script src="./js/main.js"></script>
   <body>
-    <ul id="messages"></ul>
-    <form id="form" action="">
-      <input autofocus id="input" autocomplete="off" /><button>Send</button>
-    </form>
+    <div class="chat-container">
+      <header class="chat-header">
+        <h1>Chat Chat <i class="far fa-comment"></i></h1>
+      </header>
+      <main class="chat-main" style="display: flex;">
+        <div class="chat-sidebar">
+          <h3><i class="fas fa-users"></i> Users</h3>
+          <ul id="users">
+            <li>Chat bot</li>
+          </ul>
+        </div>
+        <div class="chat-form-container">
+          <ul id="messages"></ul>
+          <form id="form" action="">
+            <input autofocus id="input" autocomplete="off" />
+            <button id="send-btn">Send</button>
+          </form>
+        </div>
+      </main>
+    </div>
   </body>
 </html>

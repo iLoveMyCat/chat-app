@@ -12,33 +12,46 @@ const PORT = process.env.PORT || 3000;
 const { Server } = require("socket.io");
 const io = new Server(server);
 const formatMessage = require('./utils/messages');
-const BOT_NAME = "Grisha The Bot";
+const BOT_NAME = "Chat bot";
+const {userJoin, getCurrentUser, getAllUsers, userLeft} = require("./utils/users");
 
 //user count increased and decreased on connect and disconnect
 var clients = 0;
 
 //listen on the connection event
 io.on('connection', (socket) => {
-    //log user count and connection message
-    clients ++;
-    socket.broadcast.emit('chat message', formatMessage(BOT_NAME, `a new user just connected, there are currently ${clients-1} users in the chat`));
-    if(clients == 2){
-      socket.emit('chat message', formatMessage(BOT_NAME,`Welcome! There is currently ${clients-1} other user in this chat`));
-    }
-    else{
-      socket.emit('chat message', formatMessage(BOT_NAME,`Welcome! There are currently ${clients-1} other users in this chat`));
-    }
+    socket.on('join server', ({username, color}) => {
+      const user = userJoin(socket.id, username, color);
+      //log user count and connection message
+      clients ++;
+      socket.broadcast.emit('chat message', formatMessage(BOT_NAME, `${user.username} joined the chat, there are currently ${clients-1} users in the chat`));
+      if(clients == 2){
+        socket.emit('chat message', formatMessage(BOT_NAME,`Welcome ${user.username}! There is currently ${clients-1} other user in this chat`));
+      }
+      else{
+        socket.emit('chat message', formatMessage(BOT_NAME,`Welcome ${user.username}! There are currently ${clients-1} other users in this chat`));
+      }
 
-    //socket disconnects
-    socket.on('disconnect', () => {
-      clients--;
-      socket.broadcast.emit('chat message',formatMessage(BOT_NAME,'a user disconnected, ' + `${clients-1} other users left in the chat`));
-    });
-    
-    //listen on 'chat message'
-    socket.on('chat message', (msg) => {
-      //send the message to all connected sockets
-      io.emit('chat message', formatMessage(`user #${socket.id}`,msg));
+      //socket disconnects
+      socket.on('disconnect', () => {
+        clients--;
+        socket.broadcast.emit('chat message',formatMessage(BOT_NAME,`${user.username} left the chat, ${clients-1} other users left in the chat`));
+        //send users
+        io.emit('room users', {
+          users: getAllUsers()
+        });
+      });
+      
+      //listen on 'chat message'
+      socket.on('chat message', (msg) => {
+        //send the message to all connected sockets
+        io.emit('chat message', formatMessage(`${user.username}`,msg));
+      });
+
+      //send users
+      io.emit('room users', {
+        users: getAllUsers()
+      });
     });
 });
 
