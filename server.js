@@ -15,27 +15,19 @@ const formatMessage = require('./utils/messages');
 const BOT_NAME = "Chat bot";
 const {userJoin, getCurrentUser, getAllUsers, userLeft} = require("./utils/users");
 
-//user count increased and decreased on connect and disconnect
-var clients = 0;
-
 //listen on the connection event
 io.on('connection', (socket) => {
     socket.on('join server', ({username, color}) => {
       const user = userJoin(socket.id, username, color);
-      //log user count and connection message
-      clients ++;
-      socket.broadcast.emit('chat message', formatMessage(BOT_NAME, `${user.username} joined the chat, there are currently ${clients-1} users in the chat`));
-      if(clients == 2){
-        socket.emit('chat message', formatMessage(BOT_NAME,`Welcome ${user.username}! There is currently ${clients-1} other user in this chat`));
-      }
-      else{
-        socket.emit('chat message', formatMessage(BOT_NAME,`Welcome ${user.username}! There are currently ${clients-1} other users in this chat`));
-      }
+
+      socket.emit('chat message', formatMessage(BOT_NAME,`Welcome ${user.username}!`));
+      socket.broadcast.emit('chat message', formatMessage(BOT_NAME, `${user.username} just joined the chat.`));
+ 
 
       //socket disconnects
       socket.on('disconnect', () => {
-        clients--;
-        socket.broadcast.emit('chat message',formatMessage(BOT_NAME,`${user.username} left the chat, ${clients-1} other users left in the chat`));
+        userLeft(socket.id);
+        socket.broadcast.emit('chat message',formatMessage(BOT_NAME,`${user.username} left the chat.`));
         //send users
         io.emit('room users', {
           users: getAllUsers()
