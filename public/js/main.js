@@ -7,7 +7,7 @@ var socket = io();
 window.onload = function () {
     socket.emit('join server', {username, color});
     
-    var form = document.getElementById('form');
+    var form = document.getElementById('chat-form');
     var input = document.getElementById('input');
     var messages = document.getElementById('messages');
     var userList = document.getElementById('users');
