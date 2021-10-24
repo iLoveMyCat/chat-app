@@ -11,6 +11,9 @@ window.onload = function () {
     var input = document.getElementById('input');
     var messages = document.getElementById('messages');
     var userList = document.getElementById('users');
+    var typingFeedback = document.getElementById('typing-feedback');
+
+
 
     if(form && input){
         form.addEventListener('submit', function(e) {
@@ -31,6 +34,7 @@ window.onload = function () {
             messages.scrollTop = document.body.scrollHeight;
         });
 
+        //room users
         socket.on('room users', ({users}) =>{
             outputUsers(users);
         });
@@ -41,7 +45,28 @@ window.onload = function () {
             `
         }
 
-        input.focus;
+        //user is typing emit
+        input.oninput = ()=>{
+            socket.emit('user typing');
+        };
+
+        //capture usertyping
+        socket.on('user typing', (username)=>{
+            someoneIsTyping(username);
+        });
+
+        function someoneIsTyping(username){
+            typingFeedback.classList.remove("typing");
+            typingFeedback.offsetHeight;
+            typingFeedback.innerHTML = `${username} is typing...`;
+            typingFeedback.classList.add("typing");
+        }
+        function reset_animation() {
+            var el = document.getElementById('animated');
+            el.style.animation = 'none';
+            el.offsetHeight; /* trigger reflow */
+            el.style.animation = null; 
+          }
     }
 };    
 

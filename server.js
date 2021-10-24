@@ -44,6 +44,11 @@ io.on('connection', (socket) => {
       io.emit('room users', {
         users: getAllUsers()
       });
+
+      //listen on 'user typing'
+      socket.on('user typing', ()=>{
+        socket.broadcast.emit('user typing', user.username);
+      });
     });
 });
 
